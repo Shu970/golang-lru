@@ -82,7 +82,8 @@ func (c *Cache[K, V]) Add(key K, value V) (evicted bool) {
 	evicted = c.lru.Add(key, value)
 	if c.onEvictedCB != nil && evicted {
 		k, v = c.evictedKeys[0], c.evictedVals[0]
-		c.evictedKeys, c.evictedVals = c.evictedKeys[:0], c.evictedVals[:0]
+		// c.evictedKeys, c.evictedVals = c.evictedKeys[:0], c.evictedVals[:0]
+		c.evictedKeys, c.evictedVals = c.evictedKeys[1:], c.evictedVals[1:]
 	}
 	c.lock.Unlock()
 	if c.onEvictedCB != nil && evicted {
